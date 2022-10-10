@@ -8,6 +8,7 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /*
     Abans de començar hem de fer:
@@ -49,6 +50,25 @@ public class MainActivity extends AppCompatActivity {
 
         // Inicialitzem model
         records = new ArrayList<Record>();
+
+
+        ArrayList<String> personitas = new ArrayList<>();
+        personitas.add("Juan");
+        personitas.add("Ismael");
+        personitas.add("Pablo");
+        personitas.add("Edu");
+        personitas.add("Sergio");
+        personitas.add("Irene");
+        personitas.add("Rafael");
+        personitas.add("Erik");
+        personitas.add("Alejandro");
+        personitas.add("Borja");
+        personitas.add("Ivan");
+        personitas.add("Mark");
+        personitas.add("David");
+        personitas.add("Edgar");
+        personitas.add("Albert");
+
         // Afegim alguns exemples
         records.add( new Record(33,"Manolo") );
         records.add( new Record(12,"Pepe") );
@@ -83,8 +103,12 @@ public class MainActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i=0;i<500;i++) {
-                    records.add(new Record(100, "Anonymous"));
+                Random rd = new Random();
+
+                for (int i=0;i<15;i++) {
+                    int randomitem = rd.nextInt(personitas. size());
+                    int r = (int) Math.floor(Math.random() * 100);
+                    records.add(new Record(r,personitas.get(randomitem)));
                 }
                 // notificar l'adapter dels canvis al model
                 adapter.notifyDataSetChanged();

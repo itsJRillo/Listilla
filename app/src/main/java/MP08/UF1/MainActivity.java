@@ -1,13 +1,17 @@
 package MP08.UF1;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 /*
@@ -35,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         public Record(int _intents, String _nom ) {
             intents = _intents;
             nom = _nom;
+        }
+
+        public int getIntents() {
+            return intents;
         }
     }
     // Model = Taula de records: utilitzem ArrayList
@@ -114,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-
     }
 
 }

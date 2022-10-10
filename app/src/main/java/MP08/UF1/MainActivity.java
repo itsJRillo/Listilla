@@ -1,5 +1,7 @@
 package MP08.UF1;
 
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -35,14 +37,20 @@ public class MainActivity extends AppCompatActivity {
     class Record {
         public int intents;
         public String nom;
+        public Drawable imagen;
 
-        public Record(int _intents, String _nom ) {
+        public Record(int _intents, String _nom, Drawable _imagen) {
             intents = _intents;
             nom = _nom;
+            imagen = _imagen;
         }
 
         public int getIntents() {
             return intents;
+        }
+
+        public String getNom() {
+            return nom;
         }
     }
     // Model = Taula de records: utilitzem ArrayList
@@ -77,10 +85,18 @@ public class MainActivity extends AppCompatActivity {
         personitas.add("Edgar");
         personitas.add("Albert");
 
+        ArrayList<Integer> imagenes = new ArrayList<>();
+        ImageView image = findViewById(R.id.imagen);
+        imagenes.add(R.drawable.kirby);
+        imagenes.add(R.drawable.pic1);
+        imagenes.add(R.drawable.pic2);
+
+        int im = (int) Math.floor(Math.random() * 3);
+
         // Afegim alguns exemples
-        records.add( new Record(33,"Manolo") );
-        records.add( new Record(12,"Pepe") );
-        records.add( new Record(42,"Laura") );
+        records.add( new Record(33,"Manolo", getResources().getDrawable(imagenes.get(0))));
+        records.add( new Record(12,"Pepe",getResources().getDrawable(imagenes.get(1))));
+        records.add( new Record(42,"Laura",getResources().getDrawable(imagenes.get(2))));
 
         // Inicialitzem l'ArrayAdapter amb el layout pertinent
         adapter = new ArrayAdapter<Record>( this, R.layout.list_item, records )
@@ -94,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     convertView = getLayoutInflater().inflate(R.layout.list_item, container, false);
                 }
                 // "Pintem" valors (també quan es refresca)
+                ((ImageView) convertView.findViewById(R.id.imagen)).setImageResource(imagenes.get(im));
                 ((TextView) convertView.findViewById(R.id.nom)).setText(getItem(pos).nom);
                 ((TextView) convertView.findViewById(R.id.intents)).setText(Integer.toString(getItem(pos).intents));
                 return convertView;
@@ -116,12 +133,39 @@ public class MainActivity extends AppCompatActivity {
                 for (int i=0;i<15;i++) {
                     int randomitem = rd.nextInt(personitas. size());
                     int r = (int) Math.floor(Math.random() * 100);
-                    records.add(new Record(r,personitas.get(randomitem)));
+                    int im = (int) Math.floor(Math.random() * 3);
+                    records.add(new Record(r,personitas.get(randomitem), getResources().getDrawable(imagenes.get(im))));
                 }
                 // notificar l'adapter dels canvis al model
                 adapter.notifyDataSetChanged();
             }
         });
+
+        Button b2 = (Button) findViewById(R.id.button3);
+        b2.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                Collections.sort(records, Comparator.comparing(Record::getNom)
+                        .thenComparing(Record::getNom));
+
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        Button b3 = (Button) findViewById(R.id.button2);
+        b3.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                Collections.sort(records, Comparator.comparing(Record::getIntents)
+                        .thenComparingInt(Record::getIntents));
+
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+
     }
 
 }
